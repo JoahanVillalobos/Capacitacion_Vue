@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 const name = 'Vue dinámico'
 const listener = "Listener Evento"
 const arrayColores = ["blue", "red", "peru"]
 const activo = true
 const counter = ref(0)
+const favNumber = ref([])
 
 // metodo = methods
 const handleClick = () => {
@@ -19,6 +20,22 @@ const decrement = () => {
 }
 const reset = () => {
   counter.value = 0
+}
+
+const classCounter = computed(() => {
+  if (counter.value === 0) {
+    return "zero";
+  }
+  return counter.value > 0 ? "positive" : "negative"
+})
+
+const favorite = computed(() => {
+  const number = favNumber.value.find((num) => num === counter.value);
+  return number || number === 0;
+})
+
+const addFavorite = () => {
+  favNumber.value.push(counter.value)
 }
 
 
@@ -37,11 +54,17 @@ const reset = () => {
   <button v-on:click="handleClick">Activame 1</button>
   <button @click="handleClick">Activame 2</button>
 
-  <h1 :style="`color: ${arrayColores[1]}`">Reactividad Practica</h1>
-  <h2 :class="counter > 0 ? 'positivo' : 'negativo'">{{ counter }}</h2>
+  <h1 :style="`color: ${arrayColores[0]}`">Reactividad Practica</h1>
+  <h2 :class="classCounter">{{ counter }}</h2>
   <button @:click="increment">Incrementar</button>
   <button @:click="decrement">Decrement</button>
   <button @:click="reset">Reset</button>
+  <button :disabled="favorite" @:click="addFavorite">Favorite</button>
+  <ul>
+    <li v-for="(item, index) in favNumber" :key="index">
+      {{ item }}
+    </li>
+  </ul>
 </template>
 
 <style>
@@ -49,11 +72,15 @@ h1 {
   color: red;
 }
 
-.positivo {
+.positive {
   color: #23f323;
 }
 
-.negativo {
+.negative {
   color: #ff0000;
+}
+
+.zero {
+  color: #cd853f;
 }
 </style>
