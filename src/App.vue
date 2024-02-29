@@ -30,8 +30,7 @@ const classCounter = computed(() => {
 })
 
 const favorite = computed(() => {
-  const number = favNumber.value.find((num) => num === counter.value);
-  return number || number === 0;
+  return favNumber.value.includes(counter.value)
 })
 
 const addFavorite = () => {
@@ -54,17 +53,21 @@ const addFavorite = () => {
   <button v-on:click="handleClick">Activame 1</button>
   <button @click="handleClick">Activame 2</button>
 
-  <h1 :style="`color: ${arrayColores[0]}`">Reactividad Practica</h1>
-  <h2 :class="classCounter">{{ counter }}</h2>
-  <button @:click="increment">Incrementar</button>
-  <button @:click="decrement">Decrement</button>
-  <button @:click="reset">Reset</button>
-  <button :disabled="favorite" @:click="addFavorite">Favorite</button>
-  <ul>
-    <li v-for="(item, index) in favNumber" :key="index">
-      {{ item }}
-    </li>
-  </ul>
+  <div class="text-center">
+    <h1 :style="`color: ${arrayColores[0]}`">Reactividad Practica</h1>
+    <h2 :class="classCounter">{{ counter }}</h2>
+    <div class="btn-group">
+      <button @:click="increment" class="btn btn-success">Incrementar</button>
+      <button @:click="decrement" class="btn btn-danger">Decrement</button>
+      <button @:click="reset" class="btn btn-secondary">Reset</button>
+      <button :disabled="favorite" @:click="addFavorite" class="btn btn-primary"> Favorite</button>
+    </div>
+    <ul class="list-group mt-4">
+      <li class="list-group-item list-group-item-primary" v-for="(item, index) in favNumber" :key="index">
+        {{ item }}
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style>
